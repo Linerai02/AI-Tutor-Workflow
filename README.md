@@ -39,7 +39,9 @@
 └── figs/            → 几何图，Pillow 手绘后引用
 ```
 
-学生文件夹叫什么都行（`小明`、`studentA`、`studentA` 都可以），脚本不挑名字，只要求三层结构：`学生/科目/章节`。
+![三件套实拍：学案 / 教案 / 课后作业](docs/images/three-kits.png)
+
+学生文件夹叫什么都行（`小明`、`studentA`、`家教k67` 都可以），脚本不挑名字，只要求三层结构：`学生/科目/章节`。
 
 三份文档的分工是硬规则，不是建议：
 
@@ -48,6 +50,10 @@
 | 学案 | 学生 | 正文**只允许**题干 + 空白解题区；答案只在文末「答案速查」附录，且**不含课后作业答案** |
 | 教案 | 自己 | **只写答案 + 解析**，含学案 + 作业全部题目；≤ 200 行；公式只用行内 `$...$` |
 | 课后作业 | 学生 | 独立文档、**不附任何答案**，下次课由老师对答案 |
+
+教案只有答案和解析——没有课前提要、没有学情分析、没有时间分配、没有评分点。打印按页收费，一个字都不多写：
+
+![教案内页：只有答案 + 解析](docs/images/plan-answers-only.png)
 
 ---
 
@@ -66,18 +72,9 @@
 
 第 3 步的输出长这样，**不通过就让脚本告诉你哪项不对**，不靠肉眼：
 
-```
-CHAPTER: 自由落体运动
-PREFIX : studentA物理
+![build-lesson.ps1 的自检输出](docs/images/terminal-pass.png)
 
-Kit   Status Detail
----   ------ ------
-学案   PASS   oMath=41 media=0 mdImg=0 mdMath=41
-教案   PASS   oMath=58 media=0 mdImg=0 mdMath=58
-课后作业 PASS  oMath=12 media=0 mdImg=0 mdMath=12
-
-RESULT: all PASS
-```
+三项数字的含义：`oMath` = docx 里真正的 Word 公式对象数，`media` = 内嵌图片数，`mdMath` / `mdImg` = md 里声明的数量。对不上就 `WARN`——**公式悄悄变成纯文本这种事，肉眼看不出来，数字看得出来。**
 
 `WARN` 的三种含义：`IMAGES_LOST` 图片被 pandoc 吞了 / `FORMULA_LOST` 公式没转成 Word 对象 / `PLACEHOLDER` 文档里还有 TODO。
 
