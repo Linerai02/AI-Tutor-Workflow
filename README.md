@@ -1,6 +1,6 @@
 # AI-Tutor-Workflow
 
-家教备课用的提示词 + 4 个 PowerShell 脚本。输入一节课的知识点，输出三个 docx：学案（学生用）、教案（教师用）、课后作业（学生用）。
+家教备课用的提示词 + 脚本。输入一节课的知识点，输出三个 docx：学案（学生用）、教案（教师用）、课后作业（学生用）。
 
 不需要服务器、不需要训练模型、不需要 API。
 
@@ -34,22 +34,30 @@
 
 ## 依赖
 
-- Windows + PowerShell 5.1
+- Python 3.8+ 或 PowerShell 5.1
 - [pandoc](https://pandoc.org/)
 - 任意 LLM（网页版够用）
 
 ## 使用
 
+`new` 默认把学生目录建在桌面，缺的目录和根文件（备课主档、学生已知数据）会自动补齐。
+
 ```powershell
-# 建章节骨架
-.\scripts\new-lesson.ps1 -Student studentA -Subject 物理 -Chapter 自由落体运动 -Root D:\家教
+.\scripts\new-lesson.ps1 -Student studentA -Subject 物理 -Chapter 自由落体运动
 ```
 
-用 `prompts/` 下两份规格让模型生成三个 md，存进章节目录，然后：
+```bash
+python3 scripts/tutor.py new -s studentA -b 物理 -c 自由落体运动
+```
+
+用 `prompts/` 下两份规格让模型生成三个 md，存进章节目录，然后转换：
 
 ```powershell
-# 转 docx 并自检
-.\scripts\build-lesson.ps1 -ChapterDir "D:\家教\studentA\物理\自由落体运动"
+.\scripts\build-lesson.ps1 -ChapterDir "$HOME\Desktop\studentA\物理\自由落体运动"
+```
+
+```bash
+python3 scripts/tutor.py build -d ~/Desktop/studentA/物理/自由落体运动
 ```
 
 ![自检输出](docs/images/terminal-pass.png)
@@ -60,12 +68,16 @@
 
 ## 脚本
 
-| 脚本 | 作用 |
-|---|---|
-| `new-lesson.ps1` | 建 `学生/科目/章节/figs` 目录，已存在则拒绝 |
-| `build-lesson.ps1` | md 转 docx，自动加 `--resource-path`，打印自检 |
-| `close-lesson.ps1` | 上完课清空章节文件、保留文件夹、写清理记录 |
-| `lesson-health.ps1` | 检查目录结构、三件套齐全、空章节 |
+`tutor.py` 是跨平台版本，四个子命令对应四个 PowerShell 脚本：
+
+| 子命令 | PowerShell | 作用 |
+|---|---|---|
+| `new` | `new-lesson.ps1` | 建 `学生/科目/章节/figs` 四层目录，补齐根文件 |
+| `build` | `build-lesson.ps1` | md 转 docx，自动加 `--resource-path`，打印自检 |
+| `close` | `close-lesson.ps1` | 上完课清空章节文件、保留文件夹、写清理记录 |
+| `health` | `lesson-health.ps1` | 检查目录结构、三件套齐全、空章节 |
+
+`close` 加 `--dry-run`（PowerShell 用 `-DryRun`）只预览不删。
 
 ## 目录
 
@@ -73,15 +85,15 @@
 docs/        提示词全文、快速开始、复现教程、迭代记录、FAQ
 prompts/     学案和教案的生成规格
 templates/   备课主档、学生已知数据、pandoc 参考模板
-scripts/     4 个脚本
+scripts/     tutor.py + 4 个 PowerShell 脚本
 examples/    物理《自由落体运动》三件套（md + docx）
 ```
 
 ## 已知限制
 
-- 只支持 Windows
 - 范本只有物理是完整的，数学可直接套用；化学、生物、文科缺
 - 答案需要人工验算，脚本只检查格式不检查内容
+- Windows 下 `.ps1` 必须存成 UTF-8 BOM，否则 PowerShell 5.1 会把中文解析成乱码
 - 仓库建于 2026-11，此前的迭代在本地非 git 环境，没有历史提交
 
 ## 贡献

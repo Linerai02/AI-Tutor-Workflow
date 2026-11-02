@@ -45,7 +45,7 @@ examples/范本_<学科>_<课题>_课后作业.md
 
 ## 代码改动
 
-先开 Issue 说明要改什么。已知缺的是 bash / Python 版脚本，要做的话在 Issue 里说一声，避免重复劳动。
+先开 Issue 说明要改什么。Python 版已有（`scripts/tutor.py`），bash 版仍缺；要做 bash 版在 Issue 里说一声，避免重复劳动。
 
 改脚本时不要动自检逻辑，也不要为了兼容去掉 `--resource-path`。
 

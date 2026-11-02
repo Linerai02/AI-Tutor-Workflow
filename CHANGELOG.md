@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v0.2.0 (2026-11)
+
+- 新增 `scripts/tutor.py`：跨平台命令行（Windows / macOS / Linux），子命令 `new` / `build` / `close` / `health`，与 PowerShell 版输出一致
+- `new-lesson.ps1` / `new`：默认建在桌面；学生目录、`备课主档.md`、`学生已知数据.md` 缺失时自动创建（之前缺学生目录会直接退出）
+- 补 CONTRIBUTING.md、Issue 模板、示例成品 docx
+- README 精简
+
+---
+
 ## v0.1.0 (2026-11)
 
 首个公开版本。
