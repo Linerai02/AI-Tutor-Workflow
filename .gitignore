@@ -1,6 +1,8 @@
 # 生成的产物：不留，每次由 md 重新构建
 *.docx
 !templates/paper-reference.docx
+# 示例成品：允许入库，方便访客先看成品再决定跑不跑
+!examples/*.docx
 
 # 学生真实资料：绝对不入库
 家教*/
