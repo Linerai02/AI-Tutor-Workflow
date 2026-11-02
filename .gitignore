@@ -1,0 +1,26 @@
+# 生成的产物：不留，每次由 md 重新构建
+*.docx
+!templates/paper-reference.docx
+
+# 学生真实资料：绝对不入库
+家教*/
+学生资料/
+*.个人.md
+
+# 图片产物（保留范本图，其余忽略）
+examples/**/figs/*.png
+
+# 系统垃圾
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# Python（若你重写脚本）
+__pycache__/
+*.pyc
+.venv/
